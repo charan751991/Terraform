@@ -4,7 +4,7 @@ provider "aws" {
 
 # List of instance names
 variable "instance_names" {
-  default = ["dev", "qa", "prod"]
+  default = ["dev", "qa", "prod","release","uat"]
 }
 
 
@@ -17,3 +17,17 @@ resource "aws_instance" "example_instance" {
     Name = var.instance_names[count.index]
   }
 }
+
+# -----------------------------
+
+resource "aws_instance" "example" {
+  count         = 2
+  ami           = "ami-12345678"
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "MyInstance-${count.index + 1}"
+  }
+}
+
+
